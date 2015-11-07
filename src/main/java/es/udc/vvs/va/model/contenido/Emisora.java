@@ -1,4 +1,4 @@
-package Contenido;
+package es.udc.vvs.va.model.contenido;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import java.util.List;
  * Define el comportamiento de los componentes compuestos, 
  * almacena a los hijos e implementa las operaciones de manejo de los componentes.
  */
-public class Emisora extends Contenido{
+public class Emisora extends Contenido {
 
 	@Override
 	public String obtenerTitulo() {
@@ -34,7 +34,7 @@ public class Emisora extends Contenido{
 	}
 
 	/*
-	 * Añade Canciones o Anuncios de la lista
+	 * Aï¿½ade Canciones o Anuncios de la lista
 	 */
 	@Override
 	public void agregar(Contenido contenido, Contenido predecesor) {

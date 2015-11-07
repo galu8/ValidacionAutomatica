@@ -10,7 +10,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       
         <!-- Package versions -->
-        <junit.version>4.11</junit.version>    
+        <junit.version>4.11</junit.version> 
+        
+        <!-- JDK version -->
+        <maven.compiler.source>1.7</maven.compiler.source>
+   		<maven.compiler.target>1.7</maven.compiler.target>
     </properties>
     
     <!-- Dependencies -->
