@@ -182,7 +182,7 @@ public abstract class ServidorAbstracto implements Servidor {
 		}
 		
 		if (anuncios) {
-			this.agregarAnuncios(busqueda);
+			busqueda = this.agregarAnuncios(busqueda);
 		}
 		
 		return busqueda;

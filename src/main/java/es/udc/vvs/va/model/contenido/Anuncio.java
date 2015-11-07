@@ -8,13 +8,17 @@ import es.udc.vvs.va.util.ModelConstants;
  * Define comportamientos para objetos primitivos.
  */
 public class Anuncio extends Contenido {
-	@Override
-	public String obtenerTitulo() {
-		return "PUBLICIDAD";
+	
+	/**
+	 * Constructor
+	 */
+	public Anuncio() {
+		super.setTitulo("PUBLICIDAD");
 	}
 
 	@Override
 	public int obtenerDuracion() {
 		return ModelConstants.CT_DURACIONANUNCIO;
 	}
+
 }

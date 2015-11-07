@@ -9,29 +9,31 @@ import es.udc.vvs.va.model.exceptions.ContentManagerException;
  * Define comportamientos para objetos primitivos.
  */
 public class Cancion extends Contenido {
-	
-	private String titulo;
-	private int duracion;
 
-	/*
-	 * Constructor
+	/**
+	 * La duracion de la cancion (en segundos)
+	 */
+	private int duracion;
+	
+	/**
+	 * Constructor Cancion
+	 * @param titulo	El titulo de la cancion
+	 * @param duracion	La duracion de la cancion
+	 * @throws ContentManagerException	Si la duracion es negativa
 	 */
 	public Cancion(String titulo, int duracion)
 			throws ContentManagerException {
-		super();
-		this.titulo = titulo;
 		if (duracion < 0) {
 			throw new ContentManagerException("La duracion "
 					+ "de la cancion no puede ser negativa.");
 		}
 		this.duracion = duracion;
+		super.setTitulo(titulo);
 	}
 
-	@Override
-	public String obtenerTitulo() {
-		return titulo;
-	}
-
+	/**
+	 * @return La duracion de la cancion (en segundos)
+	 */
 	@Override
 	public int obtenerDuracion() {
 		return duracion;
