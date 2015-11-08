@@ -157,15 +157,18 @@ public abstract class ServidorAbstracto implements Servidor {
 			throws ContentManagerException {
 		
 		boolean anuncios = false;
+		boolean tokenComun = false;
+		long nContenidos = 0;
+		long length = 0;
+		
 		List<Contenido> busqueda = new LinkedList<>();
 		
 		if (tokens.containsKey(token)) { // busqueda de token valido
-			long nbusquedas;
-			if ((nbusquedas = tokens.get(token)) <= 0) {
+			if ((nContenidos = tokens.get(token)) <= 0) {
 				throw new ContentManagerException("Limite "
 						+ "de busquedas sobrepasado.");
 			} else {
-				tokens.put(token, nbusquedas - 1);
+				tokenComun = true;
 			}
 		} else if (tokenMagico.equals(token)) { // busqueda divina
 			// nada que hacer antes de buscar
@@ -179,6 +182,12 @@ public abstract class ServidorAbstracto implements Servidor {
 			if (c.obtenerTitulo().contains(subcadena)) {
 				busqueda.add(c);
 			}
+		}
+		
+		if (tokenComun) {
+			length = (int) Math.min(nContenidos, busqueda.size());
+			busqueda = busqueda.subList(0, (int) length);
+			tokens.put(token, nContenidos - busqueda.size());
 		}
 		
 		if (anuncios) {
