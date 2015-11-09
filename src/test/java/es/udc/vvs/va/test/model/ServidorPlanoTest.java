@@ -64,35 +64,35 @@ public class ServidorPlanoTest {
 		assertEquals(contenidosEncontrados.size(), 1);		
 	}
 	
-//	@Test
-//	public void testAgregarBuscarConTokenVacio() throws ContentManagerException {
-//		String tokenMagico = servidorPlano.getTokenMagico();
-//		
-//		// Crear contenido
-//		Contenido contenido = new Cancion("Read my mind", 5);
-//		
-//		// Agregamos 12 contenidos iguales
-//		for (int i=0; i < 12; i++){
-//			servidorPlano.agregar(contenido, tokenMagico);
-//		}
-//		Collection<Contenido> contenidosEncontrados = servidorPlano.buscar("Read my mind", tokenVacio);
-//		assertEquals(contenidosEncontrados.size(), 16);
-//
-//		long posicion = 0;
-//		for(Contenido c: contenidosEncontrados) {
-//			
-//			if (posicion == 0){
-//				assertEquals(c.obtenerTitulo(), "PUBLICIDAD");
-//			}
-//			
-//			if (posicion % ModelConstants.SV_POSANUNCIOCONTENIDOS == 0) {
-//				assertEquals(c.obtenerTitulo(), "PUBLICIDAD");
-//			} else {
-//				assertEquals(c.obtenerTitulo(), "Read my mind");
-//			}
-//			posicion++;
-//		}
-//	}
+	@Test
+	public void testAgregarBuscarConTokenVacio() throws ContentManagerException {
+		String tokenMagico = servidorPlano.getTokenMagico();
+		
+		// Crear contenido
+		Contenido contenido = new Cancion("Read my mind", 5);
+		
+		// Agregamos 12 contenidos iguales
+		for (int i=0; i < 12; i++){
+			servidorPlano.agregar(contenido, tokenMagico);
+		}
+		Collection<Contenido> contenidosEncontrados = servidorPlano.buscar("Read my mind", tokenVacio);
+		assertEquals(contenidosEncontrados.size(), 16);
+
+		long posicion = 0;
+		for(Contenido c: contenidosEncontrados) {
+			
+			if (posicion == 0) {
+				assertEquals(c.obtenerTitulo(), "PUBLICIDAD");
+			}else if (posicion % (ModelConstants.SV_POSANUNCIOCONTENIDOS +1) == posicion){
+				assertEquals(c.obtenerTitulo(), "Read my mind");
+			} else if (posicion % (ModelConstants.SV_POSANUNCIOCONTENIDOS +1) == 0) {
+				assertEquals(c.obtenerTitulo(), "PUBLICIDAD");
+			} else {
+				assertEquals(c.obtenerTitulo(), "Read my mind");
+			}
+			posicion++;
+		}
+	}
 	
 	@Test(expected = ContentManagerException.class)
 	public void testAgregarConTokenComun() throws ContentManagerException {
