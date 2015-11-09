@@ -83,8 +83,6 @@ public class ServidorPlanoTest {
 			
 			if (posicion == 0) {
 				assertEquals(c.obtenerTitulo(), "PUBLICIDAD");
-			}else if (posicion % (ModelConstants.SV_POSANUNCIOCONTENIDOS +1) == posicion){
-				assertEquals(c.obtenerTitulo(), "Read my mind");
 			} else if (posicion % (ModelConstants.SV_POSANUNCIOCONTENIDOS +1) == 0) {
 				assertEquals(c.obtenerTitulo(), "PUBLICIDAD");
 			} else {
