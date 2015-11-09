@@ -19,6 +19,7 @@ import es.udc.vvs.va.model.servidor.ServidorTransitivo;
 public class ServidorTransitivoTest {
 	String token;
 	ServidorTransitivo servidorTransitivo;
+	ServidorTransitivo servidorLocal;
 	ServidorPlano servidorPlano;
 	String tokenMagicoPlano;
 	
@@ -36,6 +37,9 @@ public class ServidorTransitivoTest {
 		servidorPlano.agregar(contenido3, tokenMagicoPlano);
 	}
 
+	/*
+	 * Se hace una cadena con 1 servidor de respaldo
+	 */
 	@Before
 	public void setUp() throws Exception {
 		servidorPlano = new ServidorPlano("Servidor plano test");
@@ -45,6 +49,9 @@ public class ServidorTransitivoTest {
 		servidorTransitivo = new ServidorTransitivo("Servidor transitivo test", token, servidorPlano);
 	}
 
+	/*
+	 * Prueba la busqueda en uno o varios servidores de respaldo
+	 */
 	@Test
 	public void testBuscar() throws ContentManagerException {
 		String tokenMagicoTransitivo = servidorTransitivo.getTokenMagico();
@@ -60,8 +67,23 @@ public class ServidorTransitivoTest {
 		
 		Contenido contenido = new Cancion("Sunday", 5);
 		servidorTransitivo.agregar(contenido, tokenMagicoTransitivo);
+		
 		// Busca en el servidor transitivo y lo encuentra
 		contenidosEncontrados = servidorTransitivo.buscar("Sunday", token);
+		assertEquals(contenidosEncontrados.size(), 1);
+		
+		// Añadimos un nuevo servidor de respaldo
+		servidorLocal = new ServidorTransitivo("Servidor local test", token, servidorTransitivo);
+		
+		// Busca en el servidor Local, no lo encuentra
+		// busca en el transitivo, no lo encuentra
+		// busca en el plano y lo encuentra
+		contenidosEncontrados = servidorLocal.buscar("Read my mind", token);
+		assertEquals(contenidosEncontrados.size(), 1);
+		
+		// Busca en el servidor local y no lo encuentra,
+		// busca en el transitivo y lo encuentra
+		contenidosEncontrados = servidorLocal.buscar("Sunday", token);
 		assertEquals(contenidosEncontrados.size(), 1);
 		
 	}
