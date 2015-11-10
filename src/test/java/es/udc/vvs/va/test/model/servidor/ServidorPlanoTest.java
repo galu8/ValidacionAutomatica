@@ -1,6 +1,6 @@
-package es.udc.vvs.va.test.model;
+package es.udc.vvs.va.test.model.servidor;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
 

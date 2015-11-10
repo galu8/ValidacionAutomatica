@@ -1,10 +1,11 @@
-package es.udc.vvs.va.test.model;
+package es.udc.vvs.va.test.model.contenido;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +21,7 @@ public class EmisoraTest {
 	public void setUp() throws Exception {
 	}
 
-	private Emisora crearEmisoraConContenido(String titulo){
+	private Emisora crearEmisoraConContenido(String titulo) {
 		try {
 			Cancion c1 = new Cancion("c1",210);
 			Cancion c2 = new Cancion("c2",300);
@@ -47,12 +48,12 @@ public class EmisoraTest {
 	public void testCrearCancionInvalida() 
 			throws ContentManagerException  {
 		
-			Cancion c1 = new Cancion("c1",-1);
+			new Cancion("c1",-1);
 	}
 	
 	@Test
 	public void testObtenerDuracion() {
-			
+		
 		Emisora e1 =  crearEmisoraConContenido("e1");
 		//La emisora con contenido tiene en total 755 segundos de duracion
 		assertEquals(e1.obtenerDuracion(),755);		
@@ -116,14 +117,7 @@ public class EmisoraTest {
 		List<Contenido> busqueda2 = e1.buscar("c1");
 		
 		assertEquals (busqueda2.size(),busqueda.size()-1);
-		
-		if (busqueda2.contains(busqueda.get(0))){
-			assert false;
-		}
-		else {
-			assert true;
-		}
-		
+		assertFalse(busqueda2.contains(busqueda.get(0)));
 	}
 
 }

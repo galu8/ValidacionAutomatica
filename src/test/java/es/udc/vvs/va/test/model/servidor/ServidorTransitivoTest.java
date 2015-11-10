@@ -1,4 +1,4 @@
-package es.udc.vvs.va.test.model;
+package es.udc.vvs.va.test.model.servidor;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,8 +11,6 @@ import es.udc.vvs.va.model.contenido.Anuncio;
 import es.udc.vvs.va.model.contenido.Cancion;
 import es.udc.vvs.va.model.contenido.Contenido;
 import es.udc.vvs.va.model.exceptions.ContentManagerException;
-import es.udc.vvs.va.model.servidor.Servidor;
-import es.udc.vvs.va.model.servidor.ServidorAbstracto;
 import es.udc.vvs.va.model.servidor.ServidorPlano;
 import es.udc.vvs.va.model.servidor.ServidorTransitivo;
 
