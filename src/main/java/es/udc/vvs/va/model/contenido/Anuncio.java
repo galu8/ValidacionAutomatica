@@ -7,7 +7,7 @@ import es.udc.vvs.va.util.ModelConstants;
  * Representa los objetos �hoja� (no poseen hijos). 
  * Define comportamientos para objetos primitivos.
  */
-public class Anuncio extends Contenido {
+public class Anuncio extends ContenidoAbstracto {
 	
 	/**
 	 * Constructor

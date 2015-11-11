@@ -11,7 +11,7 @@ import es.udc.vvs.va.model.exceptions.ContentManagerException;
  * almacena a los hijos e implementa las operaciones de manejo de los
  * componentes.
  */
-public class Emisora extends Contenido {
+public class Emisora extends ContenidoAbstracto {
 	
 	/**
 	 * La lista de reproduccion de la emisora
