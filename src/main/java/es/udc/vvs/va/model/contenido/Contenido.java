@@ -1,6 +1,5 @@
 package es.udc.vvs.va.model.contenido;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import es.udc.vvs.va.model.exceptions.ContentManagerException;
@@ -11,19 +10,7 @@ import es.udc.vvs.va.model.exceptions.ContentManagerException;
  * es la interfaz de acceso y manipulaci�n de los componentes hijo
  * e implementa algunos comportamientos por defecto.
  */
-public abstract class Contenido {
-	
-	/**
-	 * Titulo del contenido.
-	 */
-	private String titulo;
-	
-	/**
-	 * @param titulo Titulo del contenido
-	 */
-	protected void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
+public interface Contenido {
 
 	/**
 	 * Devuelve una lista de contenidos, en el caso de las emisoras devuelve la
@@ -31,11 +18,7 @@ public abstract class Contenido {
 	 * se devuelve a si mismo como unico elemento de la lista.
 	 * @return Lista de los contenidos
 	 */
-	public List<Contenido> obtenerListaReproduccion() {
-		List<Contenido> listaRepro = new ArrayList<Contenido>();
-		listaRepro.add(this);
-		return listaRepro;
-	}
+	List<Contenido> obtenerListaReproduccion();
 	
 	/**
 	 * Devuelve una lista de los contenidos que tienen la subcadena en su
@@ -44,23 +27,17 @@ public abstract class Contenido {
 	 * @param subCadena La subcadena a buscar
 	 * @return Lista de contenidos coincidentes
 	 */
-	public List<Contenido> buscar(String subCadena) {
-		List<Contenido> busqueda = new ArrayList<Contenido>();
-		if (this.titulo.contains(subCadena)) {
-			busqueda.add(this);
-		}
-		return busqueda;
-	}
+	List<Contenido> buscar(String subCadena);
 	
 	/**
 	 * @return El titulo del contenido
 	 */
-	public String obtenerTitulo() { return titulo; }
+	String obtenerTitulo();
 	
 	/**
 	 * @return La duracion del contenido (en segundos)
 	 */
-	public abstract int obtenerDuracion();
+	int obtenerDuracion();
 	
 	/**
 	 * Agrega un contenido a la emisora, este se agrega en la posicion
@@ -70,46 +47,13 @@ public abstract class Contenido {
 	 * @param contenido Contenido a agregar
 	 * @param predecesor Contenido predecesor en la lista de reproduccion
 	 */
-	public void agregar (Contenido contenido, Contenido predecesor) 
-		throws ContentManagerException {}
+	void agregar (Contenido contenido, Contenido predecesor) 
+		throws ContentManagerException;
 	
 	/**
 	 * Elimina la primera ocurrencia del contenido en la emisora si existe.
 	 * No hace nada en el caso de canciones y anuncios.
 	 * @param contenido Contenido a eliminar
 	 */
-	public void eliminar (Contenido contenido) {}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
-		return result;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Contenido other = (Contenido) obj;
-		if (titulo == null) {
-			if (other.titulo != null)
-				return false;
-		} else if (!titulo.equals(other.titulo))
-			return false;
-		return true;
-	}
-	
-	
+	void eliminar (Contenido contenido);	
 }

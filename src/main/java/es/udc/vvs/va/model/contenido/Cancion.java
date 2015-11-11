@@ -8,7 +8,7 @@ import es.udc.vvs.va.model.exceptions.ContentManagerException;
  * Representa los objetos �hoja� (no poseen hijos). 
  * Define comportamientos para objetos primitivos.
  */
-public class Cancion extends Contenido {
+public class Cancion extends ContenidoAbstracto {
 
 	/**
 	 * La duracion de la cancion (en segundos)
