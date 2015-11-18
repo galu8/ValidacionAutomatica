@@ -43,7 +43,6 @@ public class EmisoraTest {
 	
 	}
 	
-	
 	@Test(expected = ContentManagerException.class)
 	public void testCrearCancionInvalida() 
 			throws ContentManagerException  {
@@ -56,8 +55,25 @@ public class EmisoraTest {
 		
 		Emisora e1 =  crearEmisoraConContenido("e1");
 		//La emisora con contenido tiene en total 755 segundos de duracion
-		assertEquals(e1.obtenerDuracion(),755);		
+		assertEquals(755, e1.obtenerDuracion());		
 
+	}
+	
+	@Test
+	public void testObtenerDuracionEmisoraConEmisora() 
+			throws ContentManagerException {
+		
+		// Obtener duracion de una emisora con otra emisora dentro
+		Contenido e1 = crearEmisoraConContenido("e1");
+		Contenido e2 = crearEmisoraConContenido("e2");
+		e1.agregar(e2, null); // emisora2 en emisora1
+		assertEquals(1510, e1.obtenerDuracion());
+		
+		// Obtener duracion de e1 una vez modificado el contenido de e2
+		Contenido anuncio = new Anuncio(); // nuevo anuncio (duracion = 5)
+		e2.agregar(anuncio, null); // anuncio en emisora2 (y en emisora1)
+		assertEquals(1515, e1.obtenerDuracion()); // se esperaba 5 pero fue 0
+		
 	}
 
 	@Test
