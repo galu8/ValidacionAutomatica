@@ -54,8 +54,13 @@ public class ServidorPlanoTest {
 		servidorPlano.agregar(contenido2, tokenMagico);
 		servidorPlano.agregar(contenido3, tokenMagico);
 
-		Collection<Contenido> contenidosEncontrados = servidorPlano.buscar("Read my mind", token);
-		assertEquals(contenidosEncontrados.size(), 1);		
+		Collection<Contenido> contenidosEncontrados = 
+				servidorPlano.buscar("Read my mind", token);
+		assertEquals(1, contenidosEncontrados.size());	
+		// Probar que no es case sensitive
+		Collection<Contenido> contenidosEncontrados2 = 
+				servidorPlano.buscar("read my mind", token);
+		assertEquals(1, contenidosEncontrados2.size());	
 		
 		// Añadimos otro contenido con un nombre parecido y que debe encontrar
 		Contenido contenido4 = new Cancion("Read my mind the killers", 4);
