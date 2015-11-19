@@ -179,7 +179,8 @@ public abstract class ServidorAbstracto implements Servidor {
 		}
 		
 		for(Contenido c: almacen) {
-			if (c.obtenerTitulo().contains(subcadena)) {
+			if (c.obtenerTitulo().toLowerCase()
+					.contains(subcadena.toLowerCase())) {
 				busqueda.add(c);
 			}
 		}
