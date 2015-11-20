@@ -216,4 +216,16 @@ public abstract class ServidorAbstracto implements Servidor {
 	public String getTokenMagico() {
 		return tokenMagico;
 	}
+	
+	/**
+	 * Nos permite agregar un token a un servidor directamente.
+	 * @param token
+	 */
+	void agregarToken(String token) {
+		// para no sobrescribir tokens existentes con un
+		// SV_MAXCONTENIDOSTOKEN valor inferior
+		if (!tokens.containsKey(token)) {
+			tokens.put(token, ModelConstants.SV_MAXCONTENIDOSTOKEN);
+		}
+	}
 }
