@@ -27,6 +27,19 @@ public class ServidorPlanoTest {
 		token = servidorPlano.alta();
 	}
 
+	@Test
+	public void testCrearServidorConToken() {		
+		String nombreServidorEsperado = "Servidor plano test";
+		String tokenExpected = "tokenPrueba";
+		
+		ServidorPlano servidorPlanoConToken = new ServidorPlano("Servidor plano test", tokenExpected);
+		
+		String nombreServidor = servidorPlano.obtenerNombre();
+		
+		assertEquals(nombreServidorEsperado, nombreServidor);
+		assertEquals(tokenExpected, servidorPlanoConToken.getTokenMagico());
+	}
+	
 
 	@Test
 	public void testObtenerNombre() {		

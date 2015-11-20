@@ -12,6 +12,7 @@ import es.udc.vvs.va.model.contenido.Anuncio;
 import es.udc.vvs.va.model.contenido.Cancion;
 import es.udc.vvs.va.model.contenido.Contenido;
 import es.udc.vvs.va.model.exceptions.ContentManagerException;
+import es.udc.vvs.va.model.servidor.Servidor;
 import es.udc.vvs.va.model.servidor.ServidorPlano;
 import es.udc.vvs.va.model.servidor.ServidorTransitivo;
 
@@ -109,6 +110,13 @@ public class ServidorTransitivoTest {
 		Contenido expected = contenidosEncontrados.get(0);
 		Contenido actual = new Cancion("Read my mind", 5);
 		assertEquals(expected, actual);
+	}
+	
+	@Test(expected = ContentManagerException.class)
+	public void testAgregarSinServidorRelacionado() throws ContentManagerException {
+		
+		Servidor s = new ServidorTransitivo("Servidor transitivo test", token, null);
+	
 	}
 
 }
