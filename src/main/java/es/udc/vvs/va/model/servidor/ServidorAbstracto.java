@@ -179,7 +179,8 @@ public abstract class ServidorAbstracto implements Servidor {
 		}
 		
 		for(Contenido c: almacen) {
-			if (c.obtenerTitulo().contains(subcadena)) {
+			if (c.obtenerTitulo().toLowerCase()
+					.contains(subcadena.toLowerCase())) {
 				busqueda.add(c);
 			}
 		}
@@ -215,5 +216,17 @@ public abstract class ServidorAbstracto implements Servidor {
 	 */
 	public String getTokenMagico() {
 		return tokenMagico;
+	}
+	
+	/**
+	 * Nos permite agregar un token a un servidor directamente.
+	 * @param token
+	 */
+	void agregarToken(String token) {
+		// para no sobrescribir tokens existentes con un
+		// SV_MAXCONTENIDOSTOKEN valor inferior
+		if (!tokens.containsKey(token)) {
+			tokens.put(token, ModelConstants.SV_MAXCONTENIDOSTOKEN);
+		}
 	}
 }
