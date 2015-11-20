@@ -42,6 +42,21 @@ public class ServidorTransitivo extends ServidorAbstracto {
 		this.servidorRelacionado = servidorRelacionado;
 	}
 	
+	@Override
+	public String alta() {
+		String token = super.alta();
+		if (servidorRelacionado instanceof ServidorAbstracto) {
+			((ServidorAbstracto)servidorRelacionado).agregarToken(token);
+		}
+		return token;
+	}
+	
+	@Override
+	public void baja(String token) throws ContentManagerException {
+		super.baja(token);
+		servidorRelacionado.baja(token);
+	}
+	
 	/* Para mas informacion
 	 * @see es.udc.vvs.vas.Servidor#buscar(java.lang.String, java.lang.String)
 	 * 

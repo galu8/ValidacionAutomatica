@@ -3,6 +3,7 @@ package es.udc.vvs.va.test.model.servidor;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class ServidorTransitivoTest {
 	ServidorPlano servidorPlano;
 	String tokenMagicoPlano;
 	
-	private void crearServidorPlano() throws ContentManagerException{
+	private void agregarContenidoSP() throws ContentManagerException {
 		tokenMagicoPlano = servidorPlano.getTokenMagico();
 		
 		// Crear contenido
@@ -42,7 +43,7 @@ public class ServidorTransitivoTest {
 	public void setUp() throws Exception {
 		servidorPlano = new ServidorPlano("Servidor plano test");
 		token = servidorPlano.alta();
-		crearServidorPlano();
+		agregarContenidoSP();
 		
 		servidorTransitivo = new ServidorTransitivo("Servidor transitivo test", token, servidorPlano);
 	}
@@ -61,7 +62,6 @@ public class ServidorTransitivoTest {
 		// Busca en el servidor Transitivo, no lo encuentra y busca en el plano
 		contenidosEncontrados = servidorTransitivo.buscar("Read my mind", token);
 		assertEquals(contenidosEncontrados.size(), 1);
-		
 		
 		Contenido contenido = new Cancion("Sunday", 5);
 		servidorTransitivo.agregar(contenido, tokenMagicoTransitivo);
@@ -83,7 +83,32 @@ public class ServidorTransitivoTest {
 		// busca en el transitivo y lo encuentra
 		contenidosEncontrados = servidorLocal.buscar("Sunday", token);
 		assertEquals(contenidosEncontrados.size(), 1);
+	}
+	
+	/*
+	 * Prueba la busqueda transitiva en una unica relacion
+	 */
+	@Test
+	public void testBusquedaTransitiva() throws ContentManagerException {
+		ServidorPlano servidorPlano = new ServidorPlano("Servidor plano test");
+		String tokenMagicoPlano = servidorPlano.getTokenMagico();
+		servidorPlano.agregar(new Cancion("Read my mind", 5), tokenMagicoPlano);
 		
+		ServidorTransitivo servidorTransitivo =
+				new ServidorTransitivo(
+						"Servidor transitivo test", servidorPlano);
+		String tokenTransitivo = servidorTransitivo.alta();
+		
+		// Busca en el Servidor Plano a traves del Servidor Transitivo
+		// es.udc.vvs.va.model.exceptions.ContentManagerException:
+		// Token invalido.
+		// Los tokens "no se comparten".
+		List<Contenido> contenidosEncontrados
+			= (List<Contenido>)
+			servidorTransitivo.buscar("Read", tokenTransitivo);
+		Contenido expected = contenidosEncontrados.get(0);
+		Contenido actual = new Cancion("Read my mind", 5);
+		assertEquals(expected, actual);
 	}
 
 }
