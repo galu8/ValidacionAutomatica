@@ -120,6 +120,16 @@ public class EmisoraTest {
 		e2.agregar(e1, e2);
 		
 	}
+	
+	@Test(expected = ContentManagerException.class)
+	public void testAgregarEmisoraEnSiMisma() 
+			throws ContentManagerException {
+		
+		Contenido e1 = crearEmisoraConContenido("e1");
+
+		e1.agregar(e1, null);
+		
+	}
 
 	
 	@Test
@@ -159,6 +169,30 @@ public class EmisoraTest {
 		
 		assertEquals (busqueda2.size(),busqueda.size()-1);
 		assertFalse(busqueda2.contains(busqueda.get(0)));
+	}
+	
+	@Test
+	public void testEqualsContenido() {
+		Emisora e1 = new Emisora("e1");
+		Emisora e2 = new Emisora("e1");
+		assertEquals(e1, e2);
+		int e1Code = e1.hashCode();
+		assertEquals(e1Code, e2.hashCode());
+		assertEquals(e1Code, e1.hashCode());
+		
+		// titulo null
+		e1 = new Emisora(null);
+		// emisora con titulo null y other con titulo distinto a null
+		assertFalse(e1.equals(e2));
+		// ambas emisoras con título null
+		e2 = new Emisora(null);
+		assertEquals(e1, e2);
+		e1Code = e1.hashCode();
+		assertEquals(e1Code, e2.hashCode());
+		assertEquals(e1Code, e1.hashCode());
+		
+		// comparar con objeto nulo
+		assertFalse(e2.equals(null));
 	}
 
 
