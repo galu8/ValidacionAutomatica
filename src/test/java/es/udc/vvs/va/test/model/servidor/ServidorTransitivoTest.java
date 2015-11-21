@@ -1,6 +1,6 @@
 package es.udc.vvs.va.test.model.servidor;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -46,7 +46,8 @@ public class ServidorTransitivoTest {
 		token = servidorPlano.alta();
 		agregarContenidoSP();
 		
-		servidorTransitivo = new ServidorTransitivo("Servidor transitivo test", token, servidorPlano);
+		servidorTransitivo = new ServidorTransitivo("Servidor transitivo test",
+				token, servidorPlano);
 	}
 
 	/*
@@ -57,11 +58,13 @@ public class ServidorTransitivoTest {
 		String tokenMagicoTransitivo = servidorTransitivo.getTokenMagico();
 
 		// Busca en el Servidor Plano
-		Collection<Contenido> contenidosEncontrados = servidorPlano.buscar("Read my mind", token);
+		Collection<Contenido> contenidosEncontrados = 
+				servidorPlano.buscar("Read my mind", token);
 		assertEquals(contenidosEncontrados.size(), 1);
 		
 		// Busca en el servidor Transitivo, no lo encuentra y busca en el plano
-		contenidosEncontrados = servidorTransitivo.buscar("Read my mind", token);
+		contenidosEncontrados = servidorTransitivo.buscar("Read my mind", 
+				token);
 		assertEquals(contenidosEncontrados.size(), 1);
 		
 		Contenido contenido = new Cancion("Sunday", 5);
@@ -72,7 +75,8 @@ public class ServidorTransitivoTest {
 		assertEquals(contenidosEncontrados.size(), 1);
 		
 		// Añadimos un nuevo servidor de respaldo
-		servidorLocal = new ServidorTransitivo("Servidor local test", token, servidorTransitivo);
+		servidorLocal = new ServidorTransitivo("Servidor local test", token, 
+				servidorTransitivo);
 		
 		// Busca en el servidor Local, no lo encuentra
 		// busca en el transitivo, no lo encuentra
@@ -93,7 +97,8 @@ public class ServidorTransitivoTest {
 	public void testBusquedaTransitiva() throws ContentManagerException {
 		ServidorPlano servidorPlano = new ServidorPlano("Servidor plano test");
 		String tokenMagicoPlano = servidorPlano.getTokenMagico();
-		servidorPlano.agregar(new Cancion("Read my mind", 5), tokenMagicoPlano);
+		servidorPlano.agregar(new Cancion("Read my mind", 5), 
+				tokenMagicoPlano);
 		
 		ServidorTransitivo servidorTransitivo =
 				new ServidorTransitivo(
@@ -113,9 +118,17 @@ public class ServidorTransitivoTest {
 	}
 	
 	@Test(expected = ContentManagerException.class)
-	public void testAgregarSinServidorRelacionado() throws ContentManagerException {
+	public void testDarDeBajaTokenInexistente() 
+			throws ContentManagerException {
+		servidorTransitivo.baja("asdf");		
+	}
+	
+	@Test(expected = ContentManagerException.class)
+	public void testAgregarSinServidorRelacionado() 
+			throws ContentManagerException {
 		
-		Servidor s = new ServidorTransitivo("Servidor transitivo test", token, null);
+		Servidor s = new ServidorTransitivo("Servidor transitivo test", token, 
+				null);
 	
 	}
 
