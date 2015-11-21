@@ -17,16 +17,14 @@ import es.udc.vvs.va.model.exceptions.ContentManagerException;
 
 public class EmisoraTest {
 
-	@Before
-	public void setUp() throws Exception {
-	}
 
+	
 	private Emisora crearEmisoraConContenido(String titulo) {
 		try {
-			Cancion c1 = new Cancion("c1",210);
-			Cancion c2 = new Cancion("c2",300);
-			Cancion c3 = new Cancion("c3",240);
-			Anuncio a = new Anuncio();
+			Contenido c1 = new Cancion("c1",210);
+			Contenido c2 = new Cancion("c2",300);
+			Contenido c3 = new Cancion("c3",240);
+			Contenido a = new Anuncio();
 			
 			Emisora e = new Emisora(titulo);
 			e.agregar(c1, e);
@@ -53,7 +51,7 @@ public class EmisoraTest {
 	@Test
 	public void testObtenerDuracion() {
 		
-		Emisora e1 =  crearEmisoraConContenido("e1");
+		Contenido e1 =  crearEmisoraConContenido("e1");
 		//La emisora con contenido tiene en total 755 segundos de duracion
 		assertEquals(755, e1.obtenerDuracion());		
 
@@ -80,9 +78,9 @@ public class EmisoraTest {
 	public void testObtenerListaReproduccion() 
 			throws ContentManagerException {
 
-		Emisora e1 = new Emisora("e1");
-		Cancion c1 = new Cancion ("c1",300);
-		Cancion c2 = new Cancion ("c2",250);
+		Contenido e1 = new Emisora("e1");
+		Contenido c1 = new Cancion ("c1",300);
+		Contenido c2 = new Cancion ("c2",250);
 		e1.agregar(c1, null);
 		e1.agregar(c2,c1);
 		
@@ -99,8 +97,8 @@ public class EmisoraTest {
 
 	@Test
 	public void testBuscar() throws ContentManagerException {
-		Emisora e1 = new Emisora("e1");
-		Cancion c1 = new Cancion("c1",250);
+		Contenido e1 = new Emisora("e1");
+		Contenido c1 = new Cancion("c1",250);
 		e1.agregar(c1,null);
 		
 		List<Contenido> c = e1.buscar("c1");
@@ -115,17 +113,54 @@ public class EmisoraTest {
 	public void testAgregarEmisorasEntreSi() 
 			throws ContentManagerException {
 		
-		Emisora e1 = crearEmisoraConContenido("e1");
-		Emisora e2 = crearEmisoraConContenido("e2");
+		Contenido e1 = crearEmisoraConContenido("e1");
+		Contenido e2 = crearEmisoraConContenido("e2");
 
 		e1.agregar(e2, null);
 		e2.agregar(e1, e2);
 		
 	}
+	
+	@Test(expected = ContentManagerException.class)
+	public void testAgregarEmisoraEnSiMisma() 
+			throws ContentManagerException {
+		
+		Contenido e1 = crearEmisoraConContenido("e1");
 
+		e1.agregar(e1, null);
+		
+	}
+
+	
+	@Test
+	public void testAgregarEmisorasEnOtra() 
+			throws ContentManagerException {
+		
+		Contenido e1 = crearEmisoraConContenido("e1");
+		Contenido e2 = crearEmisoraConContenido("e2");
+		Contenido e3 = crearEmisoraConContenido("e3");
+		Contenido e4 = new Emisora("e4");
+		
+		assertEquals(4,e2.obtenerListaReproduccion().size());
+		
+		e1.agregar(e4,null);
+		assertEquals(5,e1.obtenerListaReproduccion().size());
+		
+		e2.agregar(e3, null);
+		e2.agregar(e1, null);
+		int ultPos = e2.obtenerListaReproduccion().size() - 1;
+		
+		assertEquals(e1,e2.obtenerListaReproduccion().get(ultPos));
+		assertEquals(6,e2.obtenerListaReproduccion().size());
+		
+	}
+	
+	
+	
+	
 	@Test
 	public void testEliminar() {
-		Emisora e1 = crearEmisoraConContenido("e1");
+		Contenido e1 = crearEmisoraConContenido("e1");
 		//devuelve una cancion
 		List<Contenido> busqueda = e1.buscar("c1");
 		//La eliminamos
@@ -135,5 +170,30 @@ public class EmisoraTest {
 		assertEquals (busqueda2.size(),busqueda.size()-1);
 		assertFalse(busqueda2.contains(busqueda.get(0)));
 	}
+	
+	@Test
+	public void testEqualsContenido() {
+		Emisora e1 = new Emisora("e1");
+		Emisora e2 = new Emisora("e1");
+		assertEquals(e1, e2);
+		int e1Code = e1.hashCode();
+		assertEquals(e1Code, e2.hashCode());
+		assertEquals(e1Code, e1.hashCode());
+		
+		// titulo null
+		e1 = new Emisora(null);
+		// emisora con titulo null y other con titulo distinto a null
+		assertFalse(e1.equals(e2));
+		// ambas emisoras con título null
+		e2 = new Emisora(null);
+		assertEquals(e1, e2);
+		e1Code = e1.hashCode();
+		assertEquals(e1Code, e2.hashCode());
+		assertEquals(e1Code, e1.hashCode());
+		
+		// comparar con objeto nulo
+		assertFalse(e2.equals(null));
+	}
+
 
 }

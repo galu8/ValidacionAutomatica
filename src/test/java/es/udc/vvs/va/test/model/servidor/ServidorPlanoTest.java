@@ -1,6 +1,6 @@
 package es.udc.vvs.va.test.model.servidor;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Collection;
 
@@ -27,7 +27,27 @@ public class ServidorPlanoTest {
 		token = servidorPlano.alta();
 	}
 
-
+	/*
+	 * Prueba el constructor con token especificado, el metodo obtenerNombre y
+	 * el metodo getTokenMagico
+	 */
+	@Test
+	public void testCrearServidorConToken() {		
+		String nombreServidorEsperado = "Servidor plano test";
+		String tokenExpected = "tokenPrueba";
+		
+		ServidorPlano servidorPlanoConToken = 
+				new ServidorPlano("Servidor plano test", tokenExpected);
+		
+		String nombreServidor = servidorPlano.obtenerNombre();
+		
+		assertEquals(nombreServidorEsperado, nombreServidor);
+		assertEquals(tokenExpected, servidorPlanoConToken.getTokenMagico());
+	}
+	
+	/*
+	 * Prueba el metodo obtenerNombre
+	 */
 	@Test
 	public void testObtenerNombre() {		
 		String nombreServidorEsperado = "Servidor plano test";
@@ -71,11 +91,39 @@ public class ServidorPlanoTest {
 	}
 	
 	/*
+	 * Prueba el metodo buscar una vez sobrepasado el limite de contenidos del
+	 * token. Salta la excepcion de límite sobrepasado.
+	 */
+	@Test(expected = ContentManagerException.class)
+	public void testLimiteSobrepasadoBusquedas() 
+			throws ContentManagerException {
+		String tokenMagico = servidorPlano.getTokenMagico();
+		
+		// Crear contenido
+		Contenido contenido = new Cancion("Read my mind", 5);
+		Contenido contenido2 = new Anuncio();
+		Contenido contenido3 = new Cancion("Sunday", 4);
+		
+		// Agregar contenido al servidor
+		servidorPlano.agregar(contenido, tokenMagico);
+		servidorPlano.agregar(contenido2, tokenMagico);
+		servidorPlano.agregar(contenido3, tokenMagico);
+
+		for (int i=0;i<ModelConstants.SV_MAXCONTENIDOSTOKEN;i++) {
+			servidorPlano.buscar("read my mind", token);
+		}
+		
+		// Excepcion
+		servidorPlano.buscar("read my mind", token);
+	}
+	
+	/*
 	 * Prueba el metodo buscar siendo el token vacio: 
 	 * La lista de contenidos empieza con y tiene un anuncio cada 3 contenidos
 	 */
 	@Test
-	public void testAgregarBuscarConTokenVacio() throws ContentManagerException {
+	public void testAgregarBuscarConTokenVacio() 
+			throws ContentManagerException {
 		String tokenMagico = servidorPlano.getTokenMagico();
 		
 		// Crear contenido
@@ -85,8 +133,10 @@ public class ServidorPlanoTest {
 		for (int i=0; i < 12; i++){
 			servidorPlano.agregar(contenido, tokenMagico);
 		}
-		Collection<Contenido> contenidosEncontrados = servidorPlano.buscar("Read my mind", tokenVacio);
-		// Comprobamos que se han creado 12 canciones + 4 anuncios (1 + 1 cada 3)
+		Collection<Contenido> contenidosEncontrados = 
+				servidorPlano.buscar("Read my mind", tokenVacio);
+		// Comprobamos que se han creado
+		// 12 canciones + 4 anuncios (1 + 1 cada 3)
 		assertEquals(contenidosEncontrados.size(), 16);
 
 		long posicion = 0;
@@ -94,7 +144,8 @@ public class ServidorPlanoTest {
 			// Comprueba de que tipo es cada contenido
 			if (posicion == 0) {
 				assertEquals(c.obtenerTitulo(), "PUBLICIDAD");
-			} else if (posicion % (ModelConstants.SV_POSANUNCIOCONTENIDOS +1) == 0) {
+			} else if (posicion % (ModelConstants.SV_POSANUNCIOCONTENIDOS +1)
+					== 0) {
 				assertEquals(c.obtenerTitulo(), "PUBLICIDAD");
 			} else {
 				assertEquals(c.obtenerTitulo(), "Read my mind");
@@ -108,7 +159,8 @@ public class ServidorPlanoTest {
 	 * El token caduca tras devolver 10 contenidos
 	 */
 	@Test
-	public void testAgregarBuscarConTokenCaducado() throws ContentManagerException {
+	public void testAgregarBuscarConTokenCaducado() 
+			throws ContentManagerException {
 		String tokenMagico = servidorPlano.getTokenMagico();
 		
 		// Crear contenido
@@ -118,7 +170,8 @@ public class ServidorPlanoTest {
 		for (int i=0; i < 16; i++){
 			servidorPlano.agregar(contenido, tokenMagico);
 		}
-		Collection<Contenido> contenidosEncontrados = servidorPlano.buscar("Read my mind", token);
+		Collection<Contenido> contenidosEncontrados = 
+				servidorPlano.buscar("Read my mind", token);
 		// Deberia haber más de 10 elementos si el token no hubiese caducado
 		assertEquals(contenidosEncontrados.size(), 10);
 
@@ -127,6 +180,9 @@ public class ServidorPlanoTest {
 		}
 	}
 	
+	/*
+	 * Prueba el metodo agregar con un token comun (invalido para esto)
+	 */
 	@Test(expected = ContentManagerException.class)
 	public void testAgregarConTokenComun() throws ContentManagerException {
 		
@@ -135,6 +191,9 @@ public class ServidorPlanoTest {
 		servidorPlano.agregar(contenido, token);		
 	}
 
+	/*
+	 * Prueba el metodo eliminar
+	 */
 	@Test
 	public void testEliminar() throws ContentManagerException {
 		String tokenMagico = servidorPlano.getTokenMagico();
@@ -149,7 +208,8 @@ public class ServidorPlanoTest {
 		servidorPlano.agregar(contenido2, tokenMagico);
 		servidorPlano.agregar(contenido3, tokenMagico);
 
-		Collection<Contenido> contenidosEncontrados = servidorPlano.buscar("c1", token);
+		Collection<Contenido> contenidosEncontrados = 
+				servidorPlano.buscar("c1", token);
 		assertEquals(contenidosEncontrados.size(), 1);
 		
 		// Se elimina otro contenido
@@ -163,6 +223,9 @@ public class ServidorPlanoTest {
 		assertEquals(contenidosEncontrados.size(), 0);
 	}
 	
+	/*
+	 * Prueba el metodo eliminar con un token comun (invalido para esto)
+	 */
 	@Test(expected = ContentManagerException.class)
 	public void testEliminarConTokenComun() throws ContentManagerException {
 		String tokenMagico = servidorPlano.getTokenMagico();
@@ -177,10 +240,31 @@ public class ServidorPlanoTest {
 		servidorPlano.agregar(contenido2, tokenMagico);
 		servidorPlano.agregar(contenido3, tokenMagico);
 
-		Collection<Contenido> contenidosEncontrados = servidorPlano.buscar("c1", token);
+		Collection<Contenido> contenidosEncontrados = 
+				servidorPlano.buscar("c1", token);
 		assertEquals(contenidosEncontrados.size(), 1);
 		
 		// Se intenta eliminar con un token que no es "especial"
 		servidorPlano.eliminar(contenido2, token);
+	}
+	
+	/*
+	 * Prueba el metodo buscar con un token dado de baja
+	 */
+	@Test(expected = ContentManagerException.class)
+	public void testDarDeBajaToken() throws ContentManagerException {
+		
+		// Damos de baja el token existente, no debería dar excepcion
+		try {
+			// Primero buscamos con el token para comprobar que es un token 
+			// valido
+			servidorPlano.buscar("c1", token);
+			servidorPlano.baja(token);
+		} catch (ContentManagerException e) {
+			assertTrue(false);
+		}
+		
+		// Se intenta buscar con el token dado de baja
+		servidorPlano.buscar("c1", token);
 	}
 }
