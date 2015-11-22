@@ -30,17 +30,17 @@ public abstract class ServidorAbstracto implements Servidor {
 	 * @see java.util.TreeMap<K,V>
 	 * @see http://docs.oracle.com/javase/7/docs/api/java/util/TreeMap.html
 	 */
-	protected TreeMap<String, Long> tokens;
+	private TreeMap<String, Long> tokens;
 	
 	/**
 	 * El unico token que puede agregar o eliminar contenidos del servidor.
 	 */
-	protected final String tokenMagico;
+	private final String tokenMagico;
 	
 	/**
 	 * La estructura que guarda la coleccion de contenidos del servidor.
 	 */
-	protected Collection<Contenido> almacen;	
+	private Collection<Contenido> almacen;	
 	
 	
 	/**
@@ -216,6 +216,14 @@ public abstract class ServidorAbstracto implements Servidor {
 	 */
 	public String getTokenMagico() {
 		return tokenMagico;
+	}
+	
+	public TreeMap<String, Long> getTokens(){
+		return tokens;
+	}
+	
+	public Collection<Contenido> getAlmacen(){
+		return almacen;
 	}
 	
 	/**
