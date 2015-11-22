@@ -218,11 +218,11 @@ public abstract class ServidorAbstracto implements Servidor {
 		return tokenMagico;
 	}
 	
-	public TreeMap<String, Long> getTokens(){
+	protected TreeMap<String, Long> getTokens(){
 		return tokens;
 	}
 	
-	public Collection<Contenido> getAlmacen(){
+	protected Collection<Contenido> getAlmacen(){
 		return almacen;
 	}
 	
