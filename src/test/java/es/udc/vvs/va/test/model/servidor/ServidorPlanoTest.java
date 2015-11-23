@@ -1,6 +1,7 @@
 package es.udc.vvs.va.test.model.servidor;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
@@ -16,9 +17,9 @@ import es.udc.vvs.va.util.ModelConstants;
 
 public class ServidorPlanoTest {
 	
-	ServidorPlano servidorPlano;
-	String token;
-	String tokenVacio="";
+	private ServidorPlano servidorPlano;
+	private String token;
+	private String tokenVacio="";
 
 	@Before
 	public void setUp() throws Exception {
@@ -87,7 +88,7 @@ public class ServidorPlanoTest {
 		servidorPlano.agregar(contenido4, tokenMagico);
 		
 		contenidosEncontrados = servidorPlano.buscar("Read my mind", token);
-		assertEquals(contenidosEncontrados.size(), 2);	
+		assertEquals(2, contenidosEncontrados.size());	
 	}
 	
 	/*
@@ -101,13 +102,9 @@ public class ServidorPlanoTest {
 		
 		// Crear contenido
 		Contenido contenido = new Cancion("Read my mind", 5);
-		Contenido contenido2 = new Anuncio();
-		Contenido contenido3 = new Cancion("Sunday", 4);
 		
 		// Agregar contenido al servidor
 		servidorPlano.agregar(contenido, tokenMagico);
-		servidorPlano.agregar(contenido2, tokenMagico);
-		servidorPlano.agregar(contenido3, tokenMagico);
 
 		for (int i=0;i<ModelConstants.SV_MAXCONTENIDOSTOKEN;i++) {
 			servidorPlano.buscar("read my mind", token);
@@ -137,18 +134,18 @@ public class ServidorPlanoTest {
 				servidorPlano.buscar("Read my mind", tokenVacio);
 		// Comprobamos que se han creado
 		// 12 canciones + 4 anuncios (1 + 1 cada 3)
-		assertEquals(contenidosEncontrados.size(), 16);
+		assertEquals(16, contenidosEncontrados.size());
 
 		long posicion = 0;
 		for(Contenido c: contenidosEncontrados) {
 			// Comprueba de que tipo es cada contenido
 			if (posicion == 0) {
-				assertEquals(c.obtenerTitulo(), "PUBLICIDAD");
+				assertEquals("PUBLICIDAD", c.obtenerTitulo());
 			} else if (posicion % (ModelConstants.SV_POSANUNCIOCONTENIDOS +1)
 					== 0) {
-				assertEquals(c.obtenerTitulo(), "PUBLICIDAD");
+				assertEquals("PUBLICIDAD", c.obtenerTitulo());
 			} else {
-				assertEquals(c.obtenerTitulo(), "Read my mind");
+				assertEquals("Read my mind", c.obtenerTitulo());
 			}
 			posicion++;
 		}
@@ -173,10 +170,10 @@ public class ServidorPlanoTest {
 		Collection<Contenido> contenidosEncontrados = 
 				servidorPlano.buscar("Read my mind", token);
 		// Deberia haber más de 10 elementos si el token no hubiese caducado
-		assertEquals(contenidosEncontrados.size(), 10);
+		assertEquals(10, contenidosEncontrados.size());
 
 		for(Contenido c: contenidosEncontrados) {
-			assertEquals(c.obtenerTitulo(), "Read my mind");
+			assertEquals("Read my mind", c.obtenerTitulo());
 		}
 	}
 	
@@ -210,17 +207,17 @@ public class ServidorPlanoTest {
 
 		Collection<Contenido> contenidosEncontrados = 
 				servidorPlano.buscar("c1", token);
-		assertEquals(contenidosEncontrados.size(), 1);
+		assertEquals(1, contenidosEncontrados.size());
 		
 		// Se elimina otro contenido
 		servidorPlano.eliminar(contenido2, tokenMagico);
 		contenidosEncontrados = servidorPlano.buscar("c2", token);
-		assertEquals(contenidosEncontrados.size(), 1);
+		assertEquals(1, contenidosEncontrados.size());
 		
 		// Se elimina el contenido que se busca
 		servidorPlano.eliminar(contenido, tokenMagico);
 		contenidosEncontrados = servidorPlano.buscar("c1", token);
-		assertEquals(contenidosEncontrados.size(), 0);
+		assertEquals(0, contenidosEncontrados.size());
 	}
 	
 	/*
@@ -242,7 +239,7 @@ public class ServidorPlanoTest {
 
 		Collection<Contenido> contenidosEncontrados = 
 				servidorPlano.buscar("c1", token);
-		assertEquals(contenidosEncontrados.size(), 1);
+		assertEquals(1, contenidosEncontrados.size());
 		
 		// Se intenta eliminar con un token que no es "especial"
 		servidorPlano.eliminar(contenido2, token);

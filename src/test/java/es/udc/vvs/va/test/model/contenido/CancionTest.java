@@ -1,10 +1,9 @@
 package es.udc.vvs.va.test.model.contenido;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import es.udc.vvs.va.model.contenido.Cancion;
@@ -20,7 +19,7 @@ public class CancionTest {
 		
 		Contenido c = new Cancion ("c1",5);
 		
-		assertEquals(c.obtenerListaReproduccion().get(0),c);
+		assertEquals(c, c.obtenerListaReproduccion().get(0));
 		
 	}
 
@@ -71,7 +70,7 @@ public class CancionTest {
 		
 		c.eliminar(c);
 		
-		assertEquals(c.obtenerListaReproduccion().get(0),c);
+		assertEquals(c, c.obtenerListaReproduccion().get(0));
 	}
 	
 
