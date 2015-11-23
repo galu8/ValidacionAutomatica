@@ -85,9 +85,9 @@ public class EmisoraTest {
 		e1.agregar(c2,c1);
 		
 		List<Contenido> c = e1.obtenerListaReproduccion();
-		assertEquals(c.size(),2);
-		assertEquals(c.get(0),c1);
-		assertEquals(c.get(1),c2);
+		assertEquals(2, c.size());
+		assertEquals(c1, c.get(0));
+		assertEquals(c2, c.get(1));
 		
 		e1.eliminar(c1);
 		c = e1.obtenerListaReproduccion();
@@ -103,9 +103,9 @@ public class EmisoraTest {
 		
 		List<Contenido> c = e1.buscar("c1");
 		assertTrue(c.size()>0); //ha encontrado el elemento al menos
-		assertEquals(e1.obtenerListaReproduccion().get(0), c1);
+		assertEquals(c1, e1.obtenerListaReproduccion().get(0));
 		
-		c= e1.buscar("Wally");
+		c = e1.buscar("Wally");
 		assertTrue(c.isEmpty());
 	}
 
@@ -167,7 +167,7 @@ public class EmisoraTest {
 		e1.eliminar(busqueda.get(0));
 		List<Contenido> busqueda2 = e1.buscar("c1");
 		
-		assertEquals (busqueda2.size(),busqueda.size()-1);
+		assertEquals (busqueda.size()-1, busqueda2.size());
 		assertFalse(busqueda2.contains(busqueda.get(0)));
 	}
 	
