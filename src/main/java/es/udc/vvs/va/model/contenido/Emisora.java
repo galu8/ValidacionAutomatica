@@ -44,6 +44,11 @@ public class Emisora extends ContenidoAbstracto {
 			if (c.obtenerTitulo().contains(subCadena)) { 
 				busqueda.add(c);
 			}
+			
+			// Busqueda recursiva
+			if (c instanceof Emisora) {
+				busqueda.addAll(c.buscar(subCadena));
+			}
 		}
 		return busqueda;
 	}
