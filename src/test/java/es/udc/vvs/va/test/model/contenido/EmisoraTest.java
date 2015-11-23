@@ -109,6 +109,35 @@ public class EmisoraTest {
 		assertTrue(c.isEmpty());
 	}
 
+	/*
+	 * Test que prueba el funcionamiento de la busqueda recursiva en emisoras
+	 * dentro de emisoras.
+	 */
+	@Test
+	public void testBuscarRecursivo() throws ContentManagerException {
+		
+		Contenido e1 = new Emisora("e1");
+		Contenido e2 = new Emisora("e2");
+		Contenido c1 = new Cancion("c1", 250);
+		e1.agregar(e2, null);
+		e2.agregar(c1, null);
+		
+		List<Contenido> cont = e1.buscar("c1");
+		assertTrue(cont.size()>0); //ha encontrado el elemento al menos
+		assertEquals(c1, cont.get(0));
+		
+		// Emisora e4 con subcadena de busqueda en su titulo y en su contenido
+		// buscar debe devolver la emisora y la cancion
+		Contenido e3 = new Emisora("e3");
+		Contenido e4 = new Emisora("e4c1");
+		e3.agregar(e4, null);
+		e4.agregar(c1, null);
+		List<Contenido> cont2 = e3.buscar("c1");
+		assertTrue(cont2.size()==2);
+		assertEquals(e4, cont2.get(0));
+		assertEquals(c1, cont2.get(1));
+	}
+	
 	@Test(expected = ContentManagerException.class)
 	public void testAgregarEmisorasEntreSi() 
 			throws ContentManagerException {
