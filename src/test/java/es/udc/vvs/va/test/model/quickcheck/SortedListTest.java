@@ -119,7 +119,7 @@ public class SortedListTest {
 
 		for (Object cat : c.getCategories()) {
 			System.out
-					.println("[sortedListDeletionEnsureDoubleMembership] ===> "
+					.println("[sortedListDeletionCountAppearancesBA] ===> "
 							+ cat + " => " + c.getFrequency(cat));
 		}
 	}
