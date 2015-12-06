@@ -131,5 +131,23 @@ public class ServidorTransitivoTest {
 		new ServidorTransitivo("Servidor transitivo test", token, null);
 	
 	}
+	
+	@Test(expected = ContentManagerException.class)
+	public void tesBajaServidorRelacionado() 
+			throws ContentManagerException {
+		
+		Servidor sp = new ServidorPlano("Servidor plano test");
+		Servidor sr =
+				new ServidorTransitivo(
+						"Servidor transitivo test", token, sp);
+		
+		// sr y sp tienen el siguiente token compartido
+		String tokenCompartido = sr.alta();
+		sr.baja(tokenCompartido);
+		
+		// tokenCompartido también se borra en sp al borrarlo en sr
+		sp.buscar("String aleatorio", tokenCompartido);
+		
+	}
 
 }
