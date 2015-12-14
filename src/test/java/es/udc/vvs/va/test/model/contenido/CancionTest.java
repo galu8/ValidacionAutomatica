@@ -1,8 +1,12 @@
 package es.udc.vvs.va.test.model.contenido;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+
+import net.java.quickcheck.Generator;
+import net.java.quickcheck.generator.PrimitiveGenerators;
 
 import org.junit.Test;
 
@@ -11,7 +15,29 @@ import es.udc.vvs.va.model.contenido.Contenido;
 import es.udc.vvs.va.model.exceptions.ContentManagerException;
 
 public class CancionTest {
+	
+	public class DuracionGenerator implements Generator<Integer> {
+		
+		private final Generator<Integer> duracion = 
+				PrimitiveGenerators.positiveIntegers();
 
+		@Override
+		public final Integer next() {
+			return new Integer(duracion.next());
+		}
+	}
+	
+	@Test
+	public final void testObtenerDuracionQC() throws ContentManagerException {
+		final DuracionGenerator genDurac = new DuracionGenerator();
+		
+		Integer duracion = genDurac.next();
+		String nombreCancion = duracion.toString();
+		Contenido c = new Cancion(nombreCancion, duracion);
+
+		assertTrue(Integer.compare(c.obtenerDuracion(),
+				duracion) == 0);
+	}
 	
 	@Test
 	public void testObtenerDuracion() 
