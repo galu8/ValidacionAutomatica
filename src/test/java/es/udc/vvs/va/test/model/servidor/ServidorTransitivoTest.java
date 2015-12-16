@@ -1,9 +1,16 @@
 package es.udc.vvs.va.test.model.servidor;
 
-import static org.junit.Assert.*;
+import static net.java.quickcheck.generator.CombinedGenerators.lists;
+import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
+
+import net.java.quickcheck.Generator;
+import net.java.quickcheck.generator.PrimitiveGenerators;
+import net.java.quickcheck.generator.iterable.Iterables;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,12 +18,18 @@ import org.junit.Test;
 import es.udc.vvs.va.model.contenido.Anuncio;
 import es.udc.vvs.va.model.contenido.Cancion;
 import es.udc.vvs.va.model.contenido.Contenido;
+import es.udc.vvs.va.model.contenido.Emisora;
 import es.udc.vvs.va.model.exceptions.ContentManagerException;
 import es.udc.vvs.va.model.servidor.Servidor;
 import es.udc.vvs.va.model.servidor.ServidorPlano;
 import es.udc.vvs.va.model.servidor.ServidorTransitivo;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 
 public class ServidorTransitivoTest {
+	
+	private final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
 	
 	private String token;
 	private ServidorTransitivo servidorTransitivo;
@@ -49,6 +62,127 @@ public class ServidorTransitivoTest {
 		
 		servidorTransitivo = new ServidorTransitivo("Servidor transitivo test",
 				token, servidorPlano);
+	}
+	
+	class CancionListGenerator implements Generator<List<Cancion>> {
+		Generator<List<Integer>> lGen = lists(PrimitiveGenerators
+				.positiveIntegers());
+
+		@Override
+		public List<Cancion> next() {
+			List<Integer> l = lGen.next();
+
+			List<Cancion> lC = new ArrayList<Cancion>();
+
+			for (Integer dur : l) {
+				try {
+					lC.add(new Cancion(dur.toString(), dur));
+				} catch (ContentManagerException e) {
+					e.printStackTrace();
+				}
+			}
+
+			return lC;
+		}
+	}
+
+	class ContenidoListGenerator implements Generator<List<Contenido>> {
+		Generator<List<Integer>> lGen = lists(PrimitiveGenerators
+				.positiveIntegers());
+
+		@Override
+		public List<Contenido> next() {
+			List<Integer> l = lGen.next();
+			List<Contenido> lC = new ArrayList<Contenido>();
+			boolean rand;
+
+			for (Integer dur : l) {
+				try {
+					rand = new Random().nextBoolean();
+					if (rand) {
+						lC.add(new Cancion(dur.toString(), dur));
+					} else {
+						Emisora e = new Emisora(dur.toString());
+						e.agregar(new Cancion(dur.toString(), dur), null);
+					}
+				} catch (ContentManagerException e) {
+					e.printStackTrace();
+				}
+			}
+
+			return lC;
+		}
+	}
+	
+	public void buscarEnServidorConCanciones() throws ContentManagerException {
+		List<ServidorTransitivo> servidores = 
+				new ArrayList<ServidorTransitivo>();
+		Boolean rand;
+		String token;
+
+		for (int i = 0; i < 10; i++) {
+			for (List<Cancion> lC : Iterables
+					.toIterable(new CancionListGenerator())) {
+
+				ServidorPlano sp = new ServidorPlano(lC.toString() + "sp");
+				ServidorTransitivo st = 
+						new ServidorTransitivo(lC.toString(), sp);
+
+				for (Cancion cancion : lC) {
+					rand = new Random().nextBoolean();
+					if (rand) {
+						sp.agregar(cancion, sp.getTokenMagico());
+					} else {
+						st.agregar(cancion, st.getTokenMagico());
+					}
+				}
+				servidores.add(st);
+			}
+		}
+
+		for (ServidorTransitivo st : servidores) {
+			token = st.alta();
+			EtmPoint point = etmMonitor
+					.createPoint("ServidorTransitivo:buscarCanciones");
+			st.buscar("123", token);
+			point.collect();
+		}
+	}
+	
+	public void buscarEnServidorConContenidos() 
+			throws ContentManagerException {
+		List<ServidorTransitivo> servidores = 
+				new ArrayList<ServidorTransitivo>();
+		Boolean rand;
+		String token;
+
+		for (int i = 0; i < 10; i++) {
+			for (List<Contenido> lC : Iterables
+					.toIterable(new ContenidoListGenerator())) {
+
+				ServidorPlano sp = new ServidorPlano(lC.toString() + "sp");
+				ServidorTransitivo st = 
+						new ServidorTransitivo(lC.toString(), sp);
+
+				for (Contenido contenido : lC) {
+					rand = new Random().nextBoolean();
+					if (rand) {
+						sp.agregar(contenido, sp.getTokenMagico());
+					} else {
+						st.agregar(contenido, st.getTokenMagico());
+					}
+				}
+				servidores.add(st);
+			}
+		}
+
+		for (ServidorTransitivo st : servidores) {
+			token = st.alta();
+			EtmPoint point = etmMonitor
+					.createPoint("ServidorTransitivo:buscarContenidos");
+			st.buscar("123", token);
+			point.collect();
+		}
 	}
 
 	/*

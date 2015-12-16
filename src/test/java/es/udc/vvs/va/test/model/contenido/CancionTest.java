@@ -3,6 +3,7 @@ package es.udc.vvs.va.test.model.contenido;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.java.quickcheck.Generator;
@@ -13,8 +14,14 @@ import org.junit.Test;
 import es.udc.vvs.va.model.contenido.Cancion;
 import es.udc.vvs.va.model.contenido.Contenido;
 import es.udc.vvs.va.model.exceptions.ContentManagerException;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 
 public class CancionTest {
+
+	private final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
+	
 	
 	public class DuracionGenerator implements Generator<Integer> {
 		
@@ -30,13 +37,24 @@ public class CancionTest {
 	@Test
 	public final void testObtenerDuracionQC() throws ContentManagerException {
 		final DuracionGenerator genDurac = new DuracionGenerator();
-		
-		Integer duracion = genDurac.next();
-		String nombreCancion = duracion.toString();
-		Contenido c = new Cancion(nombreCancion, duracion);
+		List<Contenido> contenidos = new ArrayList<>();
+	
+		for (int i = 0; i<2000;i++) {
+			Integer duracion = genDurac.next();
+			String nombreCancion = duracion.toString();
+			Contenido c = new Cancion(nombreCancion, duracion);
+			contenidos.add(c);
 
-		assertTrue(Integer.compare(c.obtenerDuracion(),
-				duracion) == 0);
+			assertTrue(Integer.compare(c.obtenerDuracion(),
+					duracion) == 0);
+		}
+
+		for (Contenido c : contenidos) {
+			EtmPoint point = etmMonitor
+					.createPoint("Cancion:obtenerDuracion");
+			c.obtenerDuracion();
+			point.collect();
+		}
 	}
 	
 	@Test
@@ -59,6 +77,25 @@ public class CancionTest {
 		 
 		assertEquals(c,result.get(0));
 		assertEquals(1,result.size());
+	}
+	
+	public void buscar() throws ContentManagerException {
+		final DuracionGenerator genDurac = new DuracionGenerator();
+		List<Contenido> contenidos = new ArrayList<>();
+	
+		for (int i = 0; i<2000;i++) {
+			Integer duracion = genDurac.next();
+			String nombreCancion = duracion.toString();
+			Contenido c = new Cancion(nombreCancion, duracion);
+			contenidos.add(c);
+		}
+
+		for (Contenido c : contenidos) {
+			EtmPoint point = etmMonitor
+					.createPoint("Cancion:buscar");
+			c.buscar("1");
+			point.collect();
+		}
 	}
 	
 	@Test
