@@ -20,8 +20,13 @@ import es.udc.vvs.va.model.contenido.Cancion;
 import es.udc.vvs.va.model.contenido.Contenido;
 import es.udc.vvs.va.model.contenido.Emisora;
 import es.udc.vvs.va.model.exceptions.ContentManagerException;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 
 public class EmisoraTest {
+
+	private final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
 
 	class CancionListGenerator implements Generator<List<Cancion>> {
 		Generator<List<Integer>> lGen = lists(PrimitiveGenerators
@@ -77,11 +82,12 @@ public class EmisoraTest {
 	public void testDuracionEmisoraCancionesGeneradas()
 			throws ContentManagerException {
 
-		Emisora e = new Emisora("e1");
 		int sumaDuraciones;
 
 		for (List<Cancion> lC : Iterables
 				.toIterable(new CancionListGenerator())) {
+
+			Emisora e = new Emisora(lC.toString());
 
 			sumaDuraciones = 0;
 
@@ -91,23 +97,121 @@ public class EmisoraTest {
 			}
 
 			assertEquals(sumaDuraciones, e.obtenerDuracion());
+		}
+	}
 
-			for (Cancion cancion : lC) {
-				e.eliminar(cancion);
+	public void duracionEmisoraConCanciones() throws ContentManagerException {
+
+		List<Emisora> emisoras = new ArrayList<Emisora>();
+
+		for (int i = 0; i < 10; i++) {
+			for (List<Cancion> lC : Iterables
+					.toIterable(new CancionListGenerator())) {
+
+				Emisora e = new Emisora(lC.toString());
+
+				for (Cancion cancion : lC) {
+					e.agregar(cancion, null);
+				}
+				emisoras.add(e);
 			}
+		}
+
+		for (Emisora e : emisoras) {
+			EtmPoint point = etmMonitor
+					.createPoint("Emisora:obtenerDuracionCanciones");
+			e.obtenerDuracion();
+			point.collect();
 		}
 	}
 	
+	public void buscarEnEmisoraConCanciones() throws ContentManagerException {
+
+		List<Emisora> emisoras = new ArrayList<Emisora>();
+
+		for (int i = 0; i < 10; i++) {
+			for (List<Cancion> lC : Iterables
+					.toIterable(new CancionListGenerator())) {
+
+				Emisora e = new Emisora(lC.toString());
+
+				for (Cancion cancion : lC) {
+					e.agregar(cancion, null);
+				}
+				emisoras.add(e);
+			}
+		}
+
+		for (Emisora e : emisoras) {
+			EtmPoint point = etmMonitor
+					.createPoint("Emisora:buscarCanciones");
+			e.buscar("1");
+			point.collect();
+		}
+	}
+
+	public void duracionEmisoraConContenidos() throws ContentManagerException {
+
+		List<Emisora> emisoras = new ArrayList<Emisora>();
+		
+		for (int i = 0; i < 10; i++) {
+			for (List<Contenido> lC : Iterables
+					.toIterable(new ContenidoListGenerator())) {
+
+				Emisora e = new Emisora(lC.toString());
+
+				for (Contenido contenido : lC) {
+					e.agregar(contenido, null);
+				}
+
+				emisoras.add(e);
+			}
+		}
+		
+		for (Emisora e : emisoras) {
+			EtmPoint point = etmMonitor
+					.createPoint("Emisora:obtenerDuracionContenidos");
+			e.obtenerDuracion();
+			point.collect();
+		}
+	}
+	
+	public void buscarEnEmisoraConContenidos() throws ContentManagerException {
+
+		List<Emisora> emisoras = new ArrayList<Emisora>();
+		
+		for (int i = 0; i < 10; i++) {
+			for (List<Contenido> lC : Iterables
+					.toIterable(new ContenidoListGenerator())) {
+
+				Emisora e = new Emisora(lC.toString());
+
+				for (Contenido contenido : lC) {
+					e.agregar(contenido, null);
+				}
+
+				emisoras.add(e);
+			}
+		}
+		
+		for (Emisora e : emisoras) {
+			EtmPoint point = etmMonitor
+					.createPoint("Emisora:buscarContenidos");
+			e.buscar("1");
+			point.collect();
+		}
+	}
+
 	@Test
 	public void testDuracionEmisoraContenidosGenerados()
 			throws ContentManagerException {
 
-		Emisora e = new Emisora("e1");
 		int sumaDuraciones;
 
 		for (List<Contenido> lC : Iterables
 				.toIterable(new ContenidoListGenerator())) {
 
+			Emisora e = new Emisora(lC.toString());
 			sumaDuraciones = 0;
 
 			for (Contenido contenido : lC) {
@@ -116,10 +220,6 @@ public class EmisoraTest {
 			}
 
 			assertEquals(sumaDuraciones, e.obtenerDuracion());
-
-			for (Contenido contenido : lC) {
-				e.eliminar(contenido);
-			}
 		}
 	}
 
