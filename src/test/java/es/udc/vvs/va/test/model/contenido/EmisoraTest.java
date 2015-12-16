@@ -23,6 +23,7 @@ import es.udc.vvs.va.model.exceptions.ContentManagerException;
 
 public class EmisoraTest {
 
+
 	class CancionListGenerator implements Generator<List<Cancion>> {
 		Generator<List<Integer>> lGen = lists(PrimitiveGenerators
 				.positiveIntegers());
@@ -97,6 +98,7 @@ public class EmisoraTest {
 			}
 		}
 	}
+
 	
 	@Test
 	public void testDuracionEmisoraContenidosGenerados()
@@ -295,6 +297,25 @@ public class EmisoraTest {
 		assertFalse(busqueda2.contains(busqueda.get(0)));
 	}
 
+	@Test
+	public void testEliminarContenidoDelMedioDeLaLista() throws ContentManagerException {
+		
+		Contenido e = new Emisora("emisora 1");
+		//devuelve una cancion
+		Contenido c1 = new Cancion ("c1",300);
+		Contenido c2 = new Cancion ("c2",250);
+		Contenido c3 = new Cancion ("c3",350);
+		
+		e.agregar(c1, null);
+		e.agregar(c2, c1);
+		e.agregar(c3, c2);
+		
+		e.eliminar(c1);
+		
+		assertEquals(c2,e.obtenerListaReproduccion().get(0));
+		assertEquals(c3,e.obtenerListaReproduccion().get(1));
+	}
+	
 	@Test
 	public void testEqualsContenido() {
 		Emisora e1 = new Emisora("e1");
