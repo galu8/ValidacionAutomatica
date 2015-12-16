@@ -26,10 +26,7 @@ import etm.core.monitor.EtmPoint;
 
 public class EmisoraTest {
 
-<<<<<<< HEAD
 	private final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-=======
->>>>>>> 5f4bff5ad1f801b984b0773a856ce75daa153d97
 
 	class CancionListGenerator implements Generator<List<Cancion>> {
 		Generator<List<Integer>> lGen = lists(PrimitiveGenerators
