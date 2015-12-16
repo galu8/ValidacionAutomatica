@@ -23,119 +23,86 @@ import es.udc.vvs.va.model.exceptions.ContentManagerException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MockEmisoraTest {
-	
-	private Contenido c1,c2,c3,a,e;
+  /** The e. */
+  private Contenido c1, c2, c3, a, e;
 
-	
-	@Before
-	public void setUp() throws Exception {
-		c1 = new Cancion ("c1",3);
-		c2 = new Cancion ("c2",5);
-		c3 = new Cancion ("c3",4);
-		a = new Anuncio();
-		e = mock(Emisora.class);
-		
-		when(e.obtenerListaReproduccion())
-			.thenReturn(Arrays.asList(c1,c2,c3));
-		when(e.buscar("c1"))
-			.thenReturn(Arrays.asList(c1));
-		when(e.buscar("c"))
-			.thenReturn(Arrays.asList(c1,c2,c3));
-		when(e.buscar("nada"))
-			.thenReturn(new ArrayList<Contenido>());
-		when(e.obtenerTitulo())
-			.thenReturn("Emisora 1");
-		when(e.obtenerDuracion()).thenReturn(12);
-		
-	}
-	
-	@Test
-	public void obtenerTituloTest(){
-		
-		assertEquals("Emisora 1", e.obtenerTitulo());
-		
-	}
-	
-	@Test
-	public void buscarTest(){
-		
-		List<Contenido> c = e.buscar("c1");
-		
-		assertEquals(c.get(0),c1);
-		
-		c = e.buscar("c");
-		
-		assertEquals(c.get(0),c1);
-		assertEquals(c.get(1),c2);
-		assertEquals(c.get(2),c3);
-		
-		c = e.buscar("nada");
-		
-		assertTrue(c.isEmpty());
-		
-	}
-	
-	
-	@Test
-	public void obtenerDuracionTest() 
-			throws ContentManagerException {
-		
-		
-		assertEquals(12,e.obtenerDuracion());
-		
-		e.agregar(a, c3);
-		verify(e).agregar(a, c3);
-		verify(e,times(1)).agregar(a, c3);
-		
-		when(e.obtenerDuracion()).thenReturn(17);
-		
-		assertEquals(17,e.obtenerDuracion());
-		
-		e.eliminar(c2);
-		verify(e).eliminar(c2);
-		
-		when(e.obtenerDuracion()).thenReturn(12);
-		
-		assertEquals(12, e.obtenerDuracion());
-		
-	}
-	
-	@Test
-	public void obtenerListaDereproduccionTest() 
-			throws ContentManagerException {
-		
-		//obtenemos la lista actual
-		List<Contenido> c = e.obtenerListaReproduccion();
-		
-		assertEquals(c1,c.get(0));
-		assertEquals(c2,c.get(1));
-		assertEquals(c3,c.get(2));
-		
-		e.agregar(a, c3);
-		verify(e).agregar(a, c3);
-		
-		when(e.obtenerListaReproduccion())
-			.thenReturn(Arrays.asList(c1,c2,c3,a));
-		
-		c = e.obtenerListaReproduccion();
-		
-		assertEquals(a,c.get(3));
-		
-		//Probamos a eliminar 1 elemento
-		e.eliminar(c1);
-		verify(e).eliminar(c1);
-		
-		//actualizamos la condicion del objeto mock 
-		when(e.obtenerListaReproduccion())
-			.thenReturn(Arrays.asList(c2,c3,a));
-		
-		c = e.obtenerListaReproduccion();
-		
-		assertEquals(c2,c.get(0));
-		assertEquals(c3,c.get(1));
-		assertEquals(a,c.get(2));
-		
-	}
+  /**
+   * Sets the up.
+   *
+   * @throws Exception
+   *           the exception
+   */
+  @Before
+  public void setUp() throws Exception {
+    
+    c1 = mock(Cancion.class);
+    c2 = mock(Cancion.class);
+    c3 = mock(Cancion.class);
+    a = mock(Anuncio.class); 
+    
+    when(c1.obtenerDuracion()).thenReturn(6);
+    when(c2.obtenerDuracion()).thenReturn(4);
+    when(c3.obtenerDuracion()).thenReturn(5);
+    when(a.obtenerDuracion()).thenReturn(5);
+    
+    when(c1.obtenerTitulo()).thenReturn("Cancion 1");
+    when(c2.obtenerTitulo()).thenReturn("Cancion 2");
+    when(c3.obtenerTitulo()).thenReturn("Cancion 3");
+    when(a.obtenerTitulo()).thenReturn("PUBLICIDAD");
+    
+
+    e = new Emisora("Emisora 1");
+    e.agregar(c1, null);
+    e.agregar(c2, c1);
+    e.agregar(c3, c2);
+    e.agregar(a, c3);
+    
+  }
+
+  /**
+   * Obtener titulo test.
+   * @throws ContentManagerException 
+   */
+  @Test
+  public void buscarTest() throws ContentManagerException {
+
+    
+    //busqueda normal de un parametro
+    //Comprobamos que la busqueda no es case sensitive
+    assertEquals(3,e.buscar("cancion").size());
+    
+    e.eliminar(c2);
+    
+    // buscamos despues de eliminar 1 elemento
+    assertEquals(2,e.buscar("cancion").size());
+    
+    //Buscamos una cancion inexistente
+    
+    assertTrue(e.buscar("inexsistente").isEmpty());
+    
+    
+  }
+
+  /**
+   * Obtener duracion test.
+   *
+   * @throws ContentManagerException
+   *           the content manager exception
+   */
+  @Test
+  public void obtenerDuracionTest() throws ContentManagerException {
+   
+
+    assertEquals(20, e.obtenerDuracion());
+    
+    //Para una emisora vacia
+    Emisora e2 = new Emisora("emisora Vacia");
+    
+    assertEquals(0,e2.obtenerDuracion());
+    
+    
+  }
+
 	
 	
 	

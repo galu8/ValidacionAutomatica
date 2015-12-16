@@ -41,7 +41,9 @@ public class Emisora extends ContenidoAbstracto {
 	public List<Contenido> buscar(String subCadena) {
 		List<Contenido> busqueda = new ArrayList<Contenido>();
 		for (Contenido c:listaRepr) {
-			if (c.obtenerTitulo().contains(subCadena)) { 
+			if (c.obtenerTitulo().toLowerCase()
+			    .contains(subCadena.toLowerCase())) { 
+			  
 				busqueda.add(c);
 			}
 			
