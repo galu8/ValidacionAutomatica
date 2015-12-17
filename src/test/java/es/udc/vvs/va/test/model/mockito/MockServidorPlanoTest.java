@@ -23,7 +23,6 @@ public class MockServidorPlanoTest {
   private ServidorPlano servidorPlano;
   private String token;
 
-
   @Before
   public void setUp() throws Exception {
 
@@ -34,8 +33,6 @@ public class MockServidorPlanoTest {
     a = mock(Anuncio.class);
     e = mock(Emisora.class);
 
-    
-    
     // Asignamos valores de retorno para los metodos de las clases mockeadas
     when(c1.obtenerTitulo()).thenReturn("Cancion 1");
     when(c2.obtenerTitulo()).thenReturn("Cancion 2");
