@@ -38,8 +38,6 @@ public class MockServidorTransitivoTest {
     a = mock(Anuncio.class);
     e = mock(Emisora.class);
 
-    
-    
     // Asignamos valores de retorno para los metodos de las clases mockeadas
     when(c1.obtenerTitulo()).thenReturn("Cancion 1");
     when(c2.obtenerTitulo()).thenReturn("Cancion 2");
@@ -54,11 +52,10 @@ public class MockServidorTransitivoTest {
     // Inicializamos el servidor con un token
     // Como solo indicamos el nombre, genera un token magico aleatorio
     servidorRespaldo = new ServidorPlano("Servidor RESPALDO");
-    
-    servidorTransitivo = new ServidorTransitivo("Servidor plano test",servidorRespaldo);
+
+    servidorTransitivo = new ServidorTransitivo("Servidor plano test",
+        servidorRespaldo);
     token = servidorTransitivo.alta();
-    
-    
 
   }
 
@@ -72,36 +69,31 @@ public class MockServidorTransitivoTest {
     servidorTransitivo.agregar(c1, tokenMagico);
     servidorTransitivo.agregar(a, tokenMagico);
     servidorTransitivo.agregar(c2, tokenMagico);
-    
+
     servidorRespaldo.agregar(c3, tokenMagico2);
-    
-    Collection<Contenido>  contenidosEncontrados = servidorTransitivo.buscar(
+
+    Collection<Contenido> contenidosEncontrados = servidorTransitivo.buscar(
         "nueva", token);
-    
-    contenidosEncontrados = servidorTransitivo.buscar(
-        "cancion 1", token);
-    
+
+    contenidosEncontrados = servidorTransitivo.buscar("cancion 1", token);
+
     assertEquals(1, contenidosEncontrados.size());
     assertTrue(contenidosEncontrados.contains(c1));
 
     assertFalse(contenidosEncontrados.contains(a));
 
-    //Caso en el que busca en el servidor de respaldo
-    contenidosEncontrados = servidorTransitivo.buscar(
-        "nueva", token);
-    
+    // Caso en el que busca en el servidor de respaldo
+    contenidosEncontrados = servidorTransitivo.buscar("nueva", token);
+
     assertEquals(1, contenidosEncontrados.size());
     assertTrue(contenidosEncontrados.contains(c3));
-    
-    //Caso en el que no encuentra nada
-    contenidosEncontrados = servidorTransitivo.buscar(
-        "inexistente", token);
-    
+
+    // Caso en el que no encuentra nada
+    contenidosEncontrados = servidorTransitivo.buscar("inexistente", token);
+
     assertEquals(0, contenidosEncontrados.size());
     assertTrue(contenidosEncontrados.isEmpty());
 
   }
-
-
 
 }

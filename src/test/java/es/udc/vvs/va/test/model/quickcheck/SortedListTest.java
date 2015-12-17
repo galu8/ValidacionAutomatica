@@ -16,194 +16,191 @@ import org.junit.Test;
 
 public class SortedListTest {
 
-	// @Test
-	// public void sortedListDeletion() {
-	//
-	// Classification c = new Classification();
-	//
-	// // for (List<Integer> anyList : someLists(integers())) {
-	// for (List<Integer> anyList : someLists(integers(-50,50))) {
-	//
-	// SortedList anySortedList = new SortedList(anyList);
-	// // Integer anyNumber = integers().next();
-	// Integer anyNumber = integers(-50,50).next();
-	//
-	// // System.out.println("Borrando " + anyNumber + " de " +
-	// anySortedList.toList());
-	//
-	// if (anySortedList.member(anyNumber)) {
-	// c.classifyCall("presente");
-	// }
-	// else {
-	// c.classifyCall("ausente");
-	// }
-	//
-	// anySortedList.delete(anyNumber);
-	// assertFalse(anySortedList.member(anyNumber));
-	// }
-	//
-	// for (Object cat : c.getCategories()) {
-	// System.out.println("[sortedListDeletion] ===> " + cat + " => " +
-	// c.getFrequency(cat));
-	// }
-	// }
+  // @Test
+  // public void sortedListDeletion() {
+  //
+  // Classification c = new Classification();
+  //
+  // // for (List<Integer> anyList : someLists(integers())) {
+  // for (List<Integer> anyList : someLists(integers(-50,50))) {
+  //
+  // SortedList anySortedList = new SortedList(anyList);
+  // // Integer anyNumber = integers().next();
+  // Integer anyNumber = integers(-50,50).next();
+  //
+  // // System.out.println("Borrando " + anyNumber + " de " +
+  // anySortedList.toList());
+  //
+  // if (anySortedList.member(anyNumber)) {
+  // c.classifyCall("presente");
+  // }
+  // else {
+  // c.classifyCall("ausente");
+  // }
+  //
+  // anySortedList.delete(anyNumber);
+  // assertFalse(anySortedList.member(anyNumber));
+  // }
+  //
+  // for (Object cat : c.getCategories()) {
+  // System.out.println("[sortedListDeletion] ===> " + cat + " => " +
+  // c.getFrequency(cat));
+  // }
+  // }
 
-	@Test
-	public void sortedListDeletionEnsureMembership() {
+  @Test
+  public void sortedListDeletionEnsureMembership() {
 
-		Classification c = new Classification();
+    Classification c = new Classification();
 
-		for (Pair<Integer, List<Integer>> pair : Iterables
-				.toIterable(new ContainsIntegerListGenerator())) {
+    for (Pair<Integer, List<Integer>> pair : Iterables
+        .toIterable(new ContainsIntegerListGenerator())) {
 
-			Integer anyNumber = pair.getFirst();
-			SortedList anySortedList = new SortedList(pair.getSecond());
+      Integer anyNumber = pair.getFirst();
+      SortedList anySortedList = new SortedList(pair.getSecond());
 
-			// System.out.println("Borrando " + anyNumber + " de " +
-			// anySortedList.toList());
+      // System.out.println("Borrando " + anyNumber + " de " +
+      // anySortedList.toList());
 
-			if (anySortedList.member(anyNumber)) {
-				c.classifyCall("presente");
-			} else {
-				c.classifyCall("ausente");
-			}
+      if (anySortedList.member(anyNumber)) {
+        c.classifyCall("presente");
+      } else {
+        c.classifyCall("ausente");
+      }
 
-			anySortedList.delete(anyNumber);
-			assertFalse(anySortedList.member(anyNumber));
-		}
+      anySortedList.delete(anyNumber);
+      assertFalse(anySortedList.member(anyNumber));
+    }
 
-		for (Object cat : c.getCategories()) {
-			System.out.println("[sortedListDeletionEnsureMembership] ===> "
-					+ cat + " => " + c.getFrequency(cat));
-		}
-	}
+    for (Object cat : c.getCategories()) {
+      System.out.println("[sortedListDeletionEnsureMembership] ===> " + cat
+          + " => " + c.getFrequency(cat));
+    }
+  }
 
-	class ContainsIntegerListGenerator implements
-			Generator<Pair<Integer, List<Integer>>> {
-		Generator<Integer> iGen = integers();
-		Generator<List<Integer>> lGen = lists(integers());
+  class ContainsIntegerListGenerator implements
+      Generator<Pair<Integer, List<Integer>>> {
+    Generator<Integer> iGen = integers();
+    Generator<List<Integer>> lGen = lists(integers());
 
-		@Override
-		public Pair<Integer, List<Integer>> next() {
-			Integer i = iGen.next();
-			List<Integer> l = lGen.next();
+    @Override
+    public Pair<Integer, List<Integer>> next() {
+      Integer i = iGen.next();
+      List<Integer> l = lGen.next();
 
-			l.add(i);
+      l.add(i);
 
-			return new Pair<Integer, List<Integer>>(i, l);
-		}
-	}
+      return new Pair<Integer, List<Integer>>(i, l);
+    }
+  }
 
-	@Test
-	public void sortedListDeletionEnsureDoubleMembership() {
+  @Test
+  public void sortedListDeletionEnsureDoubleMembership() {
 
-		Classification c = new Classification();
+    Classification c = new Classification();
 
-		for (Pair<Integer, List<Integer>> pair : Iterables
-				.toIterable(new ContainsTwiceIntegerListGenerator())) {
+    for (Pair<Integer, List<Integer>> pair : Iterables
+        .toIterable(new ContainsTwiceIntegerListGenerator())) {
 
-			Integer anyNumber = pair.getFirst();
-			SortedList anySortedList = new SortedList(pair.getSecond());
+      Integer anyNumber = pair.getFirst();
+      SortedList anySortedList = new SortedList(pair.getSecond());
 
-			// System.out.println("Borrando " + anyNumber + " de " +
-			// anySortedList.toList());
+      // System.out.println("Borrando " + anyNumber + " de " +
+      // anySortedList.toList());
 
-			if (anySortedList.member(anyNumber)) {
-				c.classifyCall("presente");
-			} else {
-				c.classifyCall("ausente");
-			}
-			anySortedList.delete(anyNumber);
-			assertTrue(anySortedList.member(anyNumber));
-		}
+      if (anySortedList.member(anyNumber)) {
+        c.classifyCall("presente");
+      } else {
+        c.classifyCall("ausente");
+      }
+      anySortedList.delete(anyNumber);
+      assertTrue(anySortedList.member(anyNumber));
+    }
 
-		for (Object cat : c.getCategories()) {
-			System.out
-					.println("[sortedListDeletionCountAppearancesBA] ===> "
-							+ cat + " => " + c.getFrequency(cat));
-		}
-	}
+    for (Object cat : c.getCategories()) {
+      System.out.println("[sortedListDeletionCountAppearancesBA] ===> " + cat
+          + " => " + c.getFrequency(cat));
+    }
+  }
 
-	class ContainsTwiceIntegerListGenerator implements
-			Generator<Pair<Integer, List<Integer>>> {
-		Generator<Integer> iGen = integers();
-		Generator<List<Integer>> lGen = lists(integers());
+  class ContainsTwiceIntegerListGenerator implements
+      Generator<Pair<Integer, List<Integer>>> {
+    Generator<Integer> iGen = integers();
+    Generator<List<Integer>> lGen = lists(integers());
 
-		@Override
-		public Pair<Integer, List<Integer>> next() {
-			Integer i = iGen.next();
-			List<Integer> l = lGen.next();
+    @Override
+    public Pair<Integer, List<Integer>> next() {
+      Integer i = iGen.next();
+      List<Integer> l = lGen.next();
 
-			l.add(i);
-			l.add(i);
+      l.add(i);
+      l.add(i);
 
-			return new Pair<Integer, List<Integer>>(i, l);
-		}
-	}
+      return new Pair<Integer, List<Integer>>(i, l);
+    }
+  }
 
-	@Test
-	public void sortedListDeletionCountAppearancesBA() {
+  @Test
+  public void sortedListDeletionCountAppearancesBA() {
 
-		Classification c = new Classification();
-		
-		final long topTimes = 100;
+    Classification c = new Classification();
 
-		ContainsRandomTimesIntegerListGenerator gen =
-				new ContainsRandomTimesIntegerListGenerator(topTimes);
+    final long topTimes = 100;
 
-		for (Pair<Integer, List<Integer>> pair : Iterables.toIterable(gen)) {
+    ContainsRandomTimesIntegerListGenerator gen = new ContainsRandomTimesIntegerListGenerator(
+        topTimes);
 
-			Integer anyNumber = pair.getFirst();
-			SortedList anySortedList = new SortedList(pair.getSecond());
-			long currentTimes = gen.getCurrentTimes();
+    for (Pair<Integer, List<Integer>> pair : Iterables.toIterable(gen)) {
 
-			if (anySortedList.member(anyNumber)) {
-				c.classifyCall("presente");
-			} else {
-				c.classifyCall("ausente");
-			}
-			assertEquals(currentTimes,
-					anySortedList.getNumberOfOcurrences(anyNumber));
-			anySortedList.delete(anyNumber);
-			assertEquals(currentTimes - 1,
-					anySortedList.getNumberOfOcurrences(anyNumber));
-		}
+      Integer anyNumber = pair.getFirst();
+      SortedList anySortedList = new SortedList(pair.getSecond());
+      long currentTimes = gen.getCurrentTimes();
 
-		for (Object cat : c.getCategories()) {
-			System.out
-					.println("[sortedListDeletionEnsureDoubleMembership] ===> "
-							+ cat + " => " + c.getFrequency(cat));
-		}
-	}
+      if (anySortedList.member(anyNumber)) {
+        c.classifyCall("presente");
+      } else {
+        c.classifyCall("ausente");
+      }
+      assertEquals(currentTimes, anySortedList.getNumberOfOcurrences(anyNumber));
+      anySortedList.delete(anyNumber);
+      assertEquals(currentTimes - 1,
+          anySortedList.getNumberOfOcurrences(anyNumber));
+    }
 
-	class ContainsRandomTimesIntegerListGenerator implements
-			Generator<Pair<Integer, List<Integer>>> {
-		Generator<Integer> iGen = integers();
-		Generator<List<Integer>> lGen = lists(integers());
-		long times;
-		long currentTimes;
+    for (Object cat : c.getCategories()) {
+      System.out.println("[sortedListDeletionEnsureDoubleMembership] ===> "
+          + cat + " => " + c.getFrequency(cat));
+    }
+  }
 
-		ContainsRandomTimesIntegerListGenerator(long times) {
-			this.times = times;
-		}
+  class ContainsRandomTimesIntegerListGenerator implements
+      Generator<Pair<Integer, List<Integer>>> {
+    Generator<Integer> iGen = integers();
+    Generator<List<Integer>> lGen = lists(integers());
+    long times;
+    long currentTimes;
 
-		long getCurrentTimes() {
-			return currentTimes;
-		}
+    ContainsRandomTimesIntegerListGenerator(long times) {
+      this.times = times;
+    }
 
-		@Override
-		public Pair<Integer, List<Integer>> next() {
-			Integer i = iGen.next();
-			List<Integer> l = lGen.next();
-			long realTimes = new Random().nextInt((int)times) + 1;
+    long getCurrentTimes() {
+      return currentTimes;
+    }
 
-			this.currentTimes = realTimes;
+    @Override
+    public Pair<Integer, List<Integer>> next() {
+      Integer i = iGen.next();
+      List<Integer> l = lGen.next();
+      long realTimes = new Random().nextInt((int) times) + 1;
 
-			for (int j = 0; j < realTimes; j++) {
-				l.add(i);
-			}
+      this.currentTimes = realTimes;
 
-			return new Pair<Integer, List<Integer>>(i, l);
-		}
-	}
+      for (int j = 0; j < realTimes; j++) {
+        l.add(i);
+      }
+
+      return new Pair<Integer, List<Integer>>(i, l);
+    }
+  }
 }

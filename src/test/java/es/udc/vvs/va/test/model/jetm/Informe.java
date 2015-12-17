@@ -12,57 +12,56 @@ import etm.core.renderer.SimpleTextRenderer;
 
 public class Informe {
 
-	private static EtmMonitor monitor;
+  private static EtmMonitor monitor;
 
-	protected Informe() {
-		
-	}
+  protected Informe() {
 
-	public static void main(final String[] args) {
-		// configure measurement framework
-		setup();
-		
-		CancionTest cancion = new CancionTest();
-		EmisoraTest emisora = new EmisoraTest();
-		ServidorPlanoTest servidorPlano = new ServidorPlanoTest();
-		ServidorTransitivoTest servidorTransitivo = 
-				new ServidorTransitivoTest();
+  }
 
-		try {
-			cancion.testObtenerDuracionQC();
-			cancion.buscar();
-			emisora.duracionEmisoraConCanciones();
-			emisora.duracionEmisoraConContenidos();
-			emisora.buscarEnEmisoraConCanciones();
-			emisora.buscarEnEmisoraConContenidos();
-			servidorPlano.buscarEnServidorConCanciones();
-			servidorPlano.buscarEnServidorConContenidos();
-			servidorTransitivo.buscarEnServidorConCanciones();
-			servidorTransitivo.buscarEnServidorConContenidos();
-		} catch (ContentManagerException e) {
-			e.printStackTrace();
-		}
+  public static void main(final String[] args) {
+    // configure measurement framework
+    setup();
 
-		// visualize results
-		monitor.render(new SimpleTextRenderer());
+    CancionTest cancion = new CancionTest();
+    EmisoraTest emisora = new EmisoraTest();
+    ServidorPlanoTest servidorPlano = new ServidorPlanoTest();
+    ServidorTransitivoTest servidorTransitivo = new ServidorTransitivoTest();
 
-		// shutdown measurement framework
-		tearDown();
-	}
+    try {
+      cancion.testObtenerDuracionQC();
+      cancion.buscar();
+      emisora.duracionEmisoraConCanciones();
+      emisora.duracionEmisoraConContenidos();
+      emisora.buscarEnEmisoraConCanciones();
+      emisora.buscarEnEmisoraConContenidos();
+      servidorPlano.buscarEnServidorConCanciones();
+      servidorPlano.buscarEnServidorConContenidos();
+      servidorTransitivo.buscarEnServidorConCanciones();
+      servidorTransitivo.buscarEnServidorConContenidos();
+    } catch (ContentManagerException e) {
+      e.printStackTrace();
+    }
 
-	/**
-	 * Initializates JETM.
-	 */
-	private static void setup() {
-		BasicEtmConfigurator.configure();
-		monitor = EtmManager.getEtmMonitor();
-		monitor.start();
-	}
+    // visualize results
+    monitor.render(new SimpleTextRenderer());
 
-	/**
-	 * Cleans JETM.
-	 */
-	private static void tearDown() {
-		monitor.stop();
-	}
+    // shutdown measurement framework
+    tearDown();
+  }
+
+  /**
+   * Initializates JETM.
+   */
+  private static void setup() {
+    BasicEtmConfigurator.configure();
+    monitor = EtmManager.getEtmMonitor();
+    monitor.start();
+  }
+
+  /**
+   * Cleans JETM.
+   */
+  private static void tearDown() {
+    monitor.stop();
+  }
 }

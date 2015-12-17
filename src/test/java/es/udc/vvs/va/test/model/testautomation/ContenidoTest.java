@@ -8,21 +8,21 @@ import org.graphwalker.java.annotation.Edge;
 @Model(file = "es/udc/vvs/va/test/model/testautomation/ContenidoTest.graphml")
 public interface ContenidoTest {
 
-    @Vertex()
-    void Ready();
+  @Vertex()
+  void Ready();
 
-    @Edge()
-    void e_eliminar_contenido();
+  @Edge()
+  void e_eliminar_contenido();
 
-    @Edge()
-    void e_iniciar_emisora();
+  @Edge()
+  void e_iniciar_emisora();
 
-    @Edge()
-    void e_agregar_contenido();
+  @Edge()
+  void e_agregar_contenido();
 
-    @Vertex()
-    void v_Emisora_Con_Contenido();
+  @Vertex()
+  void v_Emisora_Con_Contenido();
 
-    @Edge()
-    void e_buscar_contenido();
+  @Edge()
+  void e_buscar_contenido();
 }
